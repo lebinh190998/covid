@@ -1,25 +1,41 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { Fragment, useEffect } from 'react';
 
-function App() {
+import Global from './components/Global/Global';
+import List from './components/List/List';
+import PopUp from './components/PopUp/PopUp';
+import Spinner from './utils/Spinner/Spinner';
+
+//Redux
+import { getData } from './actions/index';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
+const App = ({ getData, covid: { loading } }) => {
+  useEffect(() => {
+    getData();
+  }, [getData]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      <div className='app' />
+      <div className='app-inner'>
+        <Global />
+        <List />
+        <PopUp />
+        {loading && <Spinner />}
+      </div>
+    </Fragment>
   );
-}
+};
 
-export default App;
+App.propTypes = {
+  covid: PropTypes.object.isRequired,
+  getData: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  covid: state.covid,
+});
+
+export default React.memo(connect(mapStateToProps, { getData })(App));

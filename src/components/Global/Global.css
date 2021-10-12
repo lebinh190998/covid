@@ -1,0 +1,10 @@
+.tab {
+  width: 45%;
+  height: 100%;
+  border-radius: 10px;
+  border: 'solid 2px #000';
+}
+
+.report {
+  font-size: 22px;
+}
